@@ -123,6 +123,7 @@ public:
 	BOOL	m_fGraphPointersSet;// are the entity pointers for the graph all set?
 	BOOL    m_fRoutingComplete; // are the optimal routes computed, yet?
 
+	int		FLoadGraph(const char *szMapName);
 	CNode	*m_pNodes;// pointer to the memory block that contains all node info
 	CLink	*m_pLinkPool;// big list of all node connections
 	signed char    *m_pRouteInfo; // compressed routing information the nodes use.
@@ -153,7 +154,7 @@ public:
 	float m_RegionMin[3], m_RegionMax[3]; // The range of nodes.
 	CACHE_ENTRY m_Cache[CACHE_SIZE];
 
-
+avfssfu
 	int m_HashPrimes[16];
 	short *m_pHashLinks;
 	int m_nHashLinks;
@@ -187,7 +188,6 @@ public:
 	int		AllocNodes ( void );
 	
 	int		CheckNODFile(const char *szMapName);
-	int		FLoadGraph(const char *szMapName);
 	int		FSaveGraph(const char *szMapName);
 	int		FSetGraphPointers(void);
 	void	CheckNode(Vector vecOrigin, int iNode);
