@@ -76,7 +76,7 @@ jobs:
       with:
         arch: x86
 
-   - name: Build on Windows with vgui
+    - name: Build on Windows with vgui
       if: startsWith(matrix.os, 'windows')
       run: |
         ./waf configure -T Release --enable-vgui
