@@ -1,0 +1,249 @@
+#
+# Copyright (c) 2015 Pavlo Lavrenenko
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+cmake_minimum_required(VERSION 3.9)
+project (SVDLL)
+
+set (SVDLL_LIBRARY server)
+
+if(NOT MSVC)
+	add_compile_options(-fno-exceptions) # GCC/Clang flag
+	add_compile_options(-fno-rtti) # GCC/Clang flag
+	add_compile_options(-Wno-invalid-offsetof) # GCC/Clang flag
+	add_compile_options(-fvisibility=hidden) # GCC/Clang flag
+	add_definitions(-D_LINUX) # It seems enough for all non-Win32 systems
+	add_definitions(-Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf -D_vsnprintf=vsnprintf )
+	if(CMAKE_BUILD_TYPE MATCHES "Release"
+		OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"
+		AND CMAKE_SYSTEM_NAME STREQUAL "Android"))
+		add_compile_options(-fno-unwind-tables -fno-asynchronous-unwind-tables) # GCC/Clang flag
+		add_compile_options(-fomit-frame-pointer) # GCC/Clang flag
+		add_compile_options(-ftree-vectorize) # GCC/Clang flag
+		add_compile_options(-funsafe-math-optimizations) # GCC/Clang flag
+	endif()
+else()
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE)
+endif()
+
+set (SVDLL_SOURCES
+	Wxdebug.cpp
+	activity.h
+	activitymap.h
+	airtank.cpp
+	animating.cpp
+	animation.cpp
+	animation.h
+	apache.cpp
+	basemonster.h
+	bmodels.cpp
+	buttons.cpp
+	cbase.cpp
+	cbase.h
+	cdll_dll.h
+	client.cpp
+	client.h
+	combat.cpp
+	compile.bat
+	controller.cpp
+	cop.cpp
+	crossbow.cpp
+	crowbar.cpp
+	decals.h
+	defaultai.cpp
+	defaultai.h
+	doors.cpp
+	doors.h
+	effects.cpp
+	effects.h
+	enginecallback.h
+	explode.cpp
+	explode.h
+	exportdef.h
+	extdll.h
+	flyingmonster.cpp
+	flyingmonster.h
+	func_break.cpp
+	func_break.h
+	func_tank.cpp
+	game.cpp
+	game.h
+	gamerules.cpp
+	gamerules.h
+	genericmonster.cpp
+	ggrenade.cpp
+	globals.cpp
+	glock.cpp
+	h_ai.cpp
+	h_battery.cpp
+	h_cine.cpp
+	h_cycler.cpp
+	h_export.cpp
+	handgrenade.cpp
+	hassassin.cpp
+	healthkit.cpp
+	hgrunt.cpp
+	hl.def
+	islave.cpp
+	items.cpp
+	items.h
+	leech.cpp
+	lights.cpp
+	maprules.cpp
+	maprules.h
+	monsterevent.h
+	monstermaker.cpp
+	monsters.cpp
+	monsters.h
+	monsterstate.cpp
+	mortar.cpp
+	mp5.cpp
+	mpstubb.cpp
+	multiplay_gamerules.cpp
+	nodes.cpp
+	nodes.h
+	nodes_compat.h
+	observer.cpp
+	pathcorner.cpp
+	plane.cpp
+	plane.h
+	plats.cpp
+	player.cpp
+	player.h
+	playermonster.cpp
+	python.cpp
+	rat.cpp
+	replace.sh
+	roach.cpp
+	satchel.cpp
+	saverestore.h
+	schedule.cpp
+	schedule.h
+	scientist.cpp
+	scripted.cpp
+	scripted.h
+	scriptevent.h
+	shotgun.cpp
+	singleplay_gamerules.cpp
+	skill.cpp
+	skill.h
+	sound.cpp
+	soundent.cpp
+	soundent.h
+	spectator.cpp
+	spectator.h
+	squad.h
+	squadmonster.cpp
+	squadmonster.h
+	squeakgrenade.cpp
+	stats.cpp
+	subs.cpp
+	talkmonster.cpp
+	talkmonster.h
+	teamplay_gamerules.cpp
+	teamplay_gamerules.h
+	tempmonster.cpp
+	terror.cpp
+	trains.h
+	triggers.cpp
+	tripmine.cpp
+	turret.cpp
+	util.cpp
+	util.h
+	vector.h
+	vehicle.cpp
+	weapons.cpp
+	weapons.h
+	world.cpp
+	wscript
+	wxdebug.h	
+	../pm_shared/pm_debug.c
+	../pm_shared/pm_math.c
+	../pm_shared/pm_shared.c
+	../public/safe_snprintf.c
+)
+
+if (HAVE_STRLCPY)
+	add_definitions(-DHAVE_STRLCPY)
+else()
+	list(APPEND SVDLL_SOURCES
+		../external/openbsd/strlcpy.c)
+endif()
+
+if (HAVE_STRLCAT)
+	add_definitions(-DHAVE_STRLCAT)
+else()
+	list(APPEND SVDLL_SOURCES
+		../external/openbsd/strlcat.c)
+endif()
+
+include_directories (. wpn_shared ../common ../engine ../pm_shared ../game_shared ../public gravgun)
+
+if(MSVC)
+	set(SVDLL_SOURCES
+		${SVDLL_SOURCES}
+		hl.def)
+endif()
+
+if(USE_VOICEMGR)
+	set(SVDLL_SOURCES
+		${SVDLL_SOURCES}
+		../game_shared/voice_gamemgr.cpp)
+else()
+	add_definitions(-DNO_VOICEGAMEMGR)
+endif()
+
+add_library (${SVDLL_LIBRARY} SHARED ${SVDLL_SOURCES})
+target_link_libraries(${SVDLL_LIBRARY} vcs_info)
+
+set_target_properties (${SVDLL_LIBRARY} PROPERTIES POSITION_INDEPENDENT_CODE 1)
+
+if(APPLE AND NOT "${SERVER_LIBRARY_NAME_OSX}" STREQUAL "")
+	# on Apple platforms we always use gamedll_osx liblist/gameinfo key, if it's set
+	set(SVDLL_NAME "${SERVER_LIBRARY_NAME_OSX}")
+elseif(NOT WIN32 AND NOT "${SERVER_LIBRARY_NAME_LINUX}" STREQUAL "")
+	# on non-Windows platforms we use gamedll_linux liblist/gameinfo key, if it's set
+	set(SVDLL_NAME "${SERVER_LIBRARY_NAME_LINUX}")
+else()
+	# on Windows or if no gamedll_osx or gamedll_linux is set, use default gamedll key
+	set(SVDLL_NAME "${SERVER_LIBRARY_NAME}")
+endif()
+
+set_target_postfix_with_name(${SVDLL_LIBRARY} ${SVDLL_NAME})
+
+set_property(TARGET ${SVDLL_LIBRARY} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+if(HAVE_LTO)
+	set_property(TARGET ${SVDLL_LIBRARY} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
+
+install(TARGETS ${SVDLL_LIBRARY}
+	RUNTIME DESTINATION "${GAMEDIR}/${SERVER_INSTALL_DIR}/"
+	LIBRARY DESTINATION "${GAMEDIR}/${SERVER_INSTALL_DIR}/"
+	PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+		GROUP_READ GROUP_EXECUTE
+		WORLD_READ WORLD_EXECUTE)
+
+if(CMAKE_BUILD_TYPE MATCHES "Release" AND NOT WIN32)
+	add_custom_command(TARGET ${SVDLL_LIBRARY}
+			POST_BUILD DEPENDS ${SVDLL_LIBRARY}
+			COMMAND ${CMAKE_STRIP} -s $<TARGET_FILE:${SVDLL_LIBRARY}>)
+endif()
