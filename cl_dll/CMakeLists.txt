@@ -65,16 +65,11 @@ endif()
 set (CLDLL_SOURCES
 	../dlls/crossbow.cpp
 	../dlls/crowbar.cpp
-	../dlls/egon.cpp
-	../dlls/gauss.cpp
 	../dlls/handgrenade.cpp
-	../dlls/hornetgun.cpp
 	../dlls/mp5.cpp
 	../dlls/python.cpp
-	../dlls/rpg.cpp
 	../dlls/satchel.cpp
 	../dlls/shotgun.cpp
-	../dlls/squeakgrenade.cpp
 	../dlls/tripmine.cpp
 	../dlls/glock.cpp
 	ev_hldm.cpp
