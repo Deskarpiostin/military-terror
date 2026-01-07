@@ -45,7 +45,6 @@ else()
 endif()
 
 set (SVDLL_SOURCES
-	Wxdebug.cpp
 	activity.h
 	activitymap.h
 	airtank.cpp
