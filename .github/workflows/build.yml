@@ -64,19 +64,11 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Build on Linux
-      if: startsWith(matrix.os, 'ubuntu')
-      run: |
-        chmod +x *
-        ./waf configure -T release
-        ./waf build -j$(nproc)
-        ./waf install --destdir $PWD/dist
     - name: Build on Linux with vgui
       if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.cc, 'gcc')
       run: |
         chmod +x *
-        ./waf configure -T release --enable-vgui
-        ./waf build -j$(nproc)
+        ./waf configure -T Release --enable-vgui
         ./waf install --destdir $PWD/dist
     - name: Set developer command prompt for Windows x86
       if: startsWith(matrix.os, 'windows')
@@ -84,17 +76,10 @@ jobs:
       with:
         arch: x86
 
-    - name: Build on Windows
+   - name: Build on Windows with vgui
       if: startsWith(matrix.os, 'windows')
       run: |
-        ./waf configure -T release
-        ./waf build -j$(nproc)
-        ./waf install --destdir dist
-    - name: Build on Windows with vgui
-      if: startsWith(matrix.os, 'windows')
-      run: |
-        ./waf configure -T release --enable-vgui
-        ./waf build -j$(nproc)
+        ./waf configure -T Release --enable-vgui
         ./waf install --destdir dist
 
     - name: Extract branch name
