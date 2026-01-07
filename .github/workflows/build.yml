@@ -24,9 +24,8 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Build Android
-        run: 
-         chmod +x *
-         ./gradlew assembleDebug
+        run:
+         ./gradlew
         working-directory: android
 
       - name: Extract branch name
@@ -67,8 +66,7 @@ jobs:
     - name: Build on Linux with vgui
       if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.cc, 'gcc')
       run: |
-        chmod +x *
-        ./waf configure -T Release --enable-vgui
+        ./waf configure -T fast --enable-vgui
         ./waf install --destdir $PWD/dist
     - name: Set developer command prompt for Windows x86
       if: startsWith(matrix.os, 'windows')
@@ -79,7 +77,7 @@ jobs:
     - name: Build on Windows with vgui
       if: startsWith(matrix.os, 'windows')
       run: |
-        ./waf configure -T Release --enable-vgui
+        ./waf configure -T fast --enable-vgui
         ./waf install --destdir dist
 
     - name: Extract branch name
