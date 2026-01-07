@@ -64,7 +64,6 @@ set (SVDLL_SOURCES
 	combat.cpp
 	compile.bat
 	controller.cpp
-	cop.cpp
 	crossbow.cpp
 	crowbar.cpp
 	decals.h
