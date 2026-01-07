@@ -153,7 +153,7 @@ public:
 	float m_RegionMin[3], m_RegionMax[3]; // The range of nodes.
 	CACHE_ENTRY m_Cache[CACHE_SIZE];
 
-avfssfu
+
 	int m_HashPrimes[16];
 	short *m_pHashLinks;
 	int m_nHashLinks;
