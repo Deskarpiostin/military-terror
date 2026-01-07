@@ -187,6 +187,7 @@ avfssfu
 	int		AllocNodes ( void );
 	
 	int		CheckNODFile(const char *szMapName);
+	int		FLoadGraph(const char *szMapName);
 	int		FSaveGraph(const char *szMapName);
 	int		FSetGraphPointers(void);
 	void	CheckNode(Vector vecOrigin, int iNode);
