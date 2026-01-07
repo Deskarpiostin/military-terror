@@ -14,7 +14,7 @@
 			android:value="mt" />
 
 		<activity
-			android:name="su.xash.striker.MainActivity"
+			android:name="su.xash.mt.MainActivity"
 			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
