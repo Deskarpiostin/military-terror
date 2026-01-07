@@ -25,7 +25,8 @@ jobs:
 
       - name: Build Android
         run:
-         ./gradlew
+         ./gradlew assembleDebug
+
         working-directory: android
 
       - name: Extract branch name
