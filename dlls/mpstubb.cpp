@@ -21,7 +21,7 @@
 #include	"nodes.h"
 #include	"talkmonster.h"
 
-float	CTalkMonster::g_talkWaitTime = 0;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
+// float	CTalkMonster::g_talkWaitTime = 0;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
 
 /*********************************************************/
 
@@ -29,7 +29,7 @@ CGraph WorldGraph;
 void CGraph::InitGraph( void ) { }
 int CGraph::FLoadGraph( const char *szMapName) { return FALSE; }
 int CGraph::AllocNodes( void ) { return FALSE; }
-int CGraph::CheckNODFile( const char *szMapName) { return FALSE; }
+//int CGraph::CheckNODFile( const char *szMapName) { return FALSE; }
 int CGraph::FSetGraphPointers( void ) { return 0; }
 void CGraph::ShowNodeConnections( int iNode ) { }
 int CGraph::FindNearestNode( const Vector &vecOrigin, int afNodeTypes ) { return 0; }
