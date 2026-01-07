@@ -123,7 +123,6 @@ public:
 	BOOL	m_fGraphPointersSet;// are the entity pointers for the graph all set?
 	BOOL    m_fRoutingComplete; // are the optimal routes computed, yet?
 
-	int		FLoadGraph(const char *szMapName);
 	CNode	*m_pNodes;// pointer to the memory block that contains all node info
 	CLink	*m_pLinkPool;// big list of all node connections
 	signed char    *m_pRouteInfo; // compressed routing information the nodes use.
